@@ -2,50 +2,29 @@ import { NextRequest, NextResponse } from 'next/server';
 import { authenticate } from '../../../../utils/auth';
 import prisma from '../../../../utils/database';
 
-export async function POST(req: NextRequest) {
- // console.log(req);
-
-  const body =  req.json();
-  const { slot } = await body;
-  const token = req.headers.get('Authorization')?.split(' ')[1];
-
-  const user = authenticate(token); // Assuming authenticate function returns user
-
-
-  try {
-    const booking = await prisma.meeting.create({
-      data: {
-        user: { connect: { id: user.userId } },
-         slot: { connect: { id: slot } },
-      },
-    });
-    return NextResponse.json({ message: `Booking created AS ${JSON.stringify(booking)}` ,status:201});
-
-  } catch (error) {
-    console.error('Error creating booking:', error);
-    return NextResponse.json({ message: 'Failed to create booking' ,status:500});
-}
-}
-
+// Get all meetings per user
 export async function GET(req: NextRequest) {
-
   console.log(req.headers);
   const authorization = req.headers.get('Authorization')?.split(' ')[1];
 
+  if (!authorization) {
+    return NextResponse.json({ message: 'Authorization token is missing' }, { status: 401 });
+  }
+
   const user = authenticate(authorization); // Assuming authenticate function returns user
 
+  if (!user) {
+    return NextResponse.json({ message: 'Invalid or expired token' }, { status: 401 });
+  }
+
   try {
-    const bookings = await prisma.booking.findMany({
+    const meetings = await prisma.meeting.findMany({
       where: { userId: user.userId },
     });
 
-return NextResponse.json({ bookings ,status:200});
+    return NextResponse.json({ meetings }, { status: 200 });
   } catch (error) {
-    console.error('Error fetching bookings:', error);
-return NextResponse.json({ message: 'Failed to fetch bookings' ,status:500});
+    console.error('Error fetching meetings:', error);
+    return NextResponse.json({ message: 'Failed to fetch meetings' }, { status: 500 });
   }
 }
-
-
-
-

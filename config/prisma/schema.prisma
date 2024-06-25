@@ -44,7 +44,7 @@ model Meeting {
   id        Int      @id @default(autoincrement())
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
-  meetingId String
+  meetingId Long
   startTime DateTime
   duration  Int
 

@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Invalid email or password',status:400 });
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {
+    const token = jwt.sign({ userId: user.id ,email:email }, process.env.JWT_SECRET!, {
       expiresIn: '1d',
     });
 

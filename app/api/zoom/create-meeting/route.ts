@@ -1,31 +1,15 @@
-import { authenticate } from '@/utils/auth';
 import { NextRequest, NextResponse } from 'next/server';
+import { authenticate } from '@/utils/auth';
 import prisma from '@/utils/database';
 
-// Define the structure of the Zoom response
-interface ZoomMeetingResponse {
-  id: string;
-  start_time: string;
-  [key: string]: any; // To allow any other properties
-}
-
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { topic, type, duration, timezone } = body;
   const token = req.headers.get('Authorization')?.split(' ')[1];
-
-  if (!token) {
-    return NextResponse.json({ message: 'Authorization token is missing', status: 401 });
-  }
-
-  const user = authenticate(token); // Assuming authenticate function returns user object
-
+  const user = authenticate(token);
   if (!user) {
-    return NextResponse.json({ message: 'Invalid or expired token', status: 401 });
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  let zoomData: ZoomMeetingResponse;
-
+  const { topic, type, duration, timezone, bookId } = await req.json();
   try {
     const response = await fetch('https://api.zoom.us/v2/users/me/meetings', {
       method: 'POST',
@@ -50,36 +34,30 @@ export async function POST(req: NextRequest) {
       }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Error creating Zoom meeting:', errorData);
-      return NextResponse.json({ message: 'Failed to create Zoom meeting', status: 500 });
+    const data = await response.json();
+    if (data.code == 124) {
+      return NextResponse.json({ message: data.message }, { status: data.code });
     }
-
-    zoomData = await response.json();
-    console.log("Successfully created Zoom meeting", zoomData);
-
-  } catch (error) {
-    console.error('Error creating Zoom meeting:', error);
-    return NextResponse.json({ message: 'Failed to create Zoom meeting', status: 500 });
-  }
-
-  const { start_time, id } = zoomData;
-
-  try {
+    console.log(data);
+    const {  id, start_time } = data;
+    const zoomMeetingId = id.toString();
+    console.log(zoomMeetingId);
+    // Save meeting to database
     const meeting = await prisma.meeting.create({
       data: {
-        duration: duration,
-        startTime: new Date(start_time),
         user: { connect: { id: user.userId } },
-        meetingId: id.toString(),
+        meetingId: zoomMeetingId,
+        booking: {
+          connect: { id: bookId },
+        },
+        startTime: start_time,
+        duration,
       },
     });
 
-    return NextResponse.json({ message: `Meeting created successfully`, meeting }, { status: 201 });
-
+    return NextResponse.json(meeting, { status: 201 });
   } catch (error) {
-    console.error('Error saving meeting to database:', error);
-    return NextResponse.json({ message: 'Failed to save meeting to database', status: 500 });
+    console.log(error);
+    return NextResponse.json({ message: 'Error creating Zoom meeting' }, { status: 500 });
   }
 }

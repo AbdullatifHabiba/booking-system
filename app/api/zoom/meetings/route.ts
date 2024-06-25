@@ -1,20 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticate } from '../../../../utils/auth';
-import prisma from '../../../../utils/database';
-
-// Get all meetings per user
+import { authenticate } from '@/utils/auth';
+import prisma from '@/utils/database';
+// get all meetings for the logged-in user
 export async function GET(req: NextRequest) {
-  console.log(req.headers);
-  const authorization = req.headers.get('Authorization')?.split(' ')[1];
-
-  if (!authorization) {
-    return NextResponse.json({ message: 'Authorization token is missing' }, { status: 401 });
-  }
-
-  const user = authenticate(authorization); // Assuming authenticate function returns user
-
+  const token = req.headers.get('Authorization')?.split(' ')[1];
+  const user = authenticate(token);
   if (!user) {
-    return NextResponse.json({ message: 'Invalid or expired token' }, { status: 401 });
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -22,9 +14,9 @@ export async function GET(req: NextRequest) {
       where: { userId: user.userId },
     });
 
-    return NextResponse.json({ meetings }, { status: 200 });
+    return NextResponse.json(meetings, { status: 200 });
   } catch (error) {
-    console.error('Error fetching meetings:', error);
-    return NextResponse.json({ message: 'Failed to fetch meetings' }, { status: 500 });
+    return NextResponse.json({ message: 'Error fetching meetings' }, { status: 500 });
   }
 }
+

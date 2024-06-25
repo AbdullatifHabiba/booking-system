@@ -1,51 +1,50 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticate } from '../../../utils/auth';
-import prisma from '../../../utils/database';
+import { authenticate } from '@/utils/auth';
+import prisma from '@/utils/database';
+import { sendEmailNotification } from '@/utils/notify';
 
+// Create a new booking
 export async function POST(req: NextRequest) {
- // console.log(req);
-
-  const body =  req.json();
-  const { slot } = await body;
   const token = req.headers.get('Authorization')?.split(' ')[1];
+  const user = authenticate(token);
+  if (!user) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
 
-  const user = authenticate(token); // Assuming authenticate function returns user
-
-
+  const { slotId  } = await req.json();
   try {
     const booking = await prisma.booking.create({
       data: {
         user: { connect: { id: user.userId } },
-         slot: { connect: { id: slot } },
+         slot: { connect: { id: slotId } },
       },
     });
-    return NextResponse.json({ message: `Booking created AS ${JSON.stringify(booking)}` ,status:201});
+     sendEmailNotification(user.email, 'Booking Confirmation', `Your booking has been confirmed for ${slotId}`);
 
+    return NextResponse.json(booking, { status: 201 });
   } catch (error) {
-    console.error('Error creating booking:', error);
-    return NextResponse.json({ message: 'Failed to create booking' ,status:500});
-}
+    console.log(error);
+    return NextResponse.json({ message: 'Error creating booking',"error":error }, { status: 500 });
+  }
 }
 
+
+// Get all bookings for the logged-in user
 export async function GET(req: NextRequest) {
-
-  console.log(req.headers);
-  const authorization = req.headers.get('Authorization')?.split(' ')[1];
-
-  const user = authenticate(authorization); // Assuming authenticate function returns user
+  const token = req.headers.get('Authorization')?.split(' ')[1];
+  const user = authenticate(token);
+  if (!user) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
 
   try {
     const bookings = await prisma.booking.findMany({
       where: { userId: user.userId },
     });
-
-return NextResponse.json({ bookings ,status:200});
+    return NextResponse.json(bookings, { status: 200 });
   } catch (error) {
-    console.error('Error fetching bookings:', error);
-return NextResponse.json({ message: 'Failed to fetch bookings' ,status:500});
+    return NextResponse.json({ message: 'Error fetching bookings' }, { status: 500 });
   }
 }
-
-
 
 

@@ -3,23 +3,23 @@ import { authenticate } from '@/utils/auth';
 import prisma from '@/utils/database';
 
 // DELETE /bookings/:id
-export async function DELETE (req: Request , context:any) {
+// Delete a booking by ID
+export async function DELETE(req: NextRequest, context: any) {
   const token = req.headers.get('Authorization')?.split(' ')[1];
-  authenticate(token); 
+  const user = authenticate(token);
+  if (!user) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
 
-  const { params } = context;
-  const { id } = params;
-
+  const { id } = context.params;
   try {
-    const booking = await prisma.booking.delete({
+    await prisma.booking.delete({
       where: { id: Number(id) },
     });
-    return NextResponse.json({ message: `Booking deleted ${JSON.stringify(booking)}` ,status:200});
-
+    return NextResponse.json({ message: 'Booking deleted' }, { status: 200 });
   } catch (error) {
-    console.error('Error deleting booking:', error);
-    return NextResponse.json({ message: 'Failed to delete booking' ,status:500});
-}
+    return NextResponse.json({ message: 'Error deleting booking' }, { status: 500 });
+  }
 }
 // GET /bookings/:id
 export async function GET(req:NextRequest,context:any) {
@@ -41,11 +41,11 @@ catch{
 }
   
   }
-// PATCH /bookings/:id
+// PATCH /bookings/:id and set zoomMeetingId
 export async function PUT (req: NextRequest , context:any) {
   const token = req.headers.get('Authorization')?.split(' ')[1];
 
-  const {slot} = await req.json();
+  const {slotId,zoomMeetingId} = await req.json();
 
   authenticate(token); // Assuming authenticate function returns user
 
@@ -56,7 +56,8 @@ export async function PUT (req: NextRequest , context:any) {
     const booking = await prisma.booking.update({
       where: { id: Number(id) },
       data: {
-        slot: { connect: { id: slot } },
+        slot: { connect: { id: slotId } },
+        zoomMeetingId: zoomMeetingId
       },
     });
     return NextResponse.json({ message: `Booking updated ${JSON.stringify(booking)}` ,status:200});

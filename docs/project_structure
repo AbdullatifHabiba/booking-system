@@ -1,0 +1,129 @@
+booking-system/
+├── app/
+│   ├── auth/
+│   │   ├── register/
+│   │   │   ├── page.tsx
+│   │   │   └── api/
+│   │   │       └── route.ts
+│   │   ├── login/
+│   │   │   ├── page.tsx
+│   │   │   └── api/
+│   │   │       └── route.ts
+│   ├── bookings/
+│   │   ├── page.tsx
+│   │   ├── api/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/
+│   │   │       └── route.ts
+│   ├── zoom/
+│   │   ├── create-meeting/
+│   │   │   ├── page.tsx
+│   │   │   └── api/
+│   │   │       └── route.ts
+│   │   ├── meetings/
+│   │   │   ├── page.tsx
+│   │   │   └── api/
+│   │   │       └── route.ts
+│   │   └── [id]/
+│   │       └── api/
+│   │           └── route.ts
+│   ├── page.tsx
+│   ├── login.tsx
+│   ├── register.tsx
+│   ├── slots.tsx
+│   ├── bookings.tsx
+│   └── meetings.tsx
+├── models/
+│   ├── user.ts
+│   ├── booking.ts
+│   └── meeting.ts
+├── components/
+│   ├── Form.tsx
+│   ├── BookingCard.tsx
+│   └── MeetingCard.tsx
+├── utils/
+│   └── auth.ts
+    └── database.ts
+
+├── Dockerfile
+├── docker-compose.yml
+├── README.md
+├── next.config.mjs
+├── next-env.d.ts
+├── node_modules
+├── package.json
+├── package-lock.json
+├── postcss.config.mjs
+├── public
+├── tailwind.config.ts
+└── tsconfig.json
+
+
+
+
+Actors
+User: Represents anyone using the system to make bookings or manage their account.
+System: Represents the booking system itself.
+Use Cases
+Register: User creates a new account.
+Login: User logs into the system.
+View Available Slots: User views the available booking slots.
+Book Slot: User books an available slot.
+Cancel Booking: User cancels an existing booking.
+View Booking History: User views their booking history.
+Create Zoom Meeting: User creates a new Zoom meeting.
+View Zoom Meetings: User views their Zoom meetings.
+Delete Zoom Meeting: User deletes a Zoom meeting.
+Use Case Relationships
+Include Relationship:
+
+Book Slot includes View Available Slots.
+Cancel Booking includes View Booking History.
+Extend Relationship:
+
+Create Zoom Meeting extends Book Slot.
+Use Case Diagram Description
+Actors:
+
+User
+System
+Use Cases for User:
+
+Register (direct interaction with User)
+Login (direct interaction with User)
+View Available Slots (direct interaction with User)
+Book Slot (direct interaction with User)
+Cancel Booking (direct interaction with User)
+View Booking History (direct interaction with User)
+Create Zoom Meeting (direct interaction with User)
+View Zoom Meetings (direct interaction with User)
+Delete Zoom Meeting (direct interaction with User)
+Use Case for System:
+
+Handle Bookings
+Book Slot
+Cancel Booking
+View Booking History
+User
+
+-----------------ERD----------------------------------------------------
++-------------+      1  ───────────  n     +-------------+
+| id          |◄───────────────────────────| userId      |
+| email       |                            | date        |
+| password    |                            | slot        |
+| name        |                            | createdAt   |
+| createdAt   |                            | updatedAt   |
+| updatedAt   |                            |             |
++-------------+                            +-------------+
+                                                Booking
+
+User
++-------------+      1  ───────────  n     +-------------+
+| id          |◄───────────────────────────| userId      |
+| email       |                            | meetingId   |
+| password    |                            | startTime   |
+| name        |                            | duration    |
+| createdAt   |                            | createdAt   |
+| updatedAt   |                            | updatedAt   |
++-------------+                            +-------------+
+                                                Meeting

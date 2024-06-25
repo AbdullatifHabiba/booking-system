@@ -1,0 +1,31 @@
+# create docker network for app with DB image
+networks:
+  app_net:
+    driver: bridge
+
+
+version: '3'
+services:
+  database:
+    image: 'postgres:13-alpine'
+    environment:
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_NAME: $DB_NAME
+      POSTGRES_HOST: $DB_HOST
+    ports:
+      - '5432:5432'
+    networks:
+
+      - app_net
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '3000:3000'
+  #   networks:
+  #     - app_net
+  #   depends_on:
+  #     - database
+

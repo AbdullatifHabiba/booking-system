@@ -1,6 +1,6 @@
 import {  NextRequest, NextResponse } from 'next/server';
-import { authenticate } from '../../../../utils/auth';
-import prisma from '../../../../utils/database';
+import { authenticate } from '@/utils/auth';
+import prisma from '@/utils/database';
 
 // DELETE /bookings/:id
 export async function DELETE (req: Request , context:any) {

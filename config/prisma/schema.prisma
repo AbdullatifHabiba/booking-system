@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// schema.prisma
 
 generator client {
   provider = "prisma-client-js"
@@ -23,28 +19,33 @@ model User {
 }
 
 model Slot {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   startTime DateTime
   endTime   DateTime
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   bookings  Booking[]
 }
-model Booking {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  slotId    Int
-  slot      Slot     @relation(fields: [slotId], references: [id])
-  createdAt DateTime @default(now())
-  @@index([userId], name: "booking_user_id_index")
 
+model Booking {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+  slotId        Int
+  slot          Slot      @relation(fields: [slotId], references: [id])
+  zoomMeetingId String? // Field for Zoom meeting ID
+  createdAt     DateTime  @default(now())
+  Meeting       Meeting[]
+
+  @@index([userId], name: "booking_user_id_index")
 }
 
 model Meeting {
   id        Int      @id @default(autoincrement())
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
-  meetingId Long
+  meetingId String   @unique // Assuming Zoom meeting ID is a string
+  bookingId Int
+  booking   Booking  @relation(fields: [bookingId], references: [id])
   startTime DateTime
   duration  Int
 

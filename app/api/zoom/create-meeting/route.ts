@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticate } from '@/utils/auth';
-import prisma from '@/utils/database';
+import { authenticate } from '@/app/utils/auth';
+import prisma from '@/app/utils/database';
 
 export async function POST(req: NextRequest) {
   const token = req.headers.get('Authorization')?.split(' ')[1];
@@ -8,8 +8,11 @@ export async function POST(req: NextRequest) {
   if (!user) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
+  // get ZOOM Access token
+  
 
-  const { topic, type, duration, timezone, bookId } = await req.json();
+  const { topic, duration, startTime } = await req.json();
+  console.log(topic, duration, startTime);
   try {
     const response = await fetch('https://api.zoom.us/v2/users/me/meetings', {
       method: 'POST',
@@ -19,10 +22,10 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         topic,
-        type,
-        start_time: new Date().toISOString(),
+        type:2,
+        start_time:startTime,
         duration,
-        timezone,
+        timezone:'Africa/Cairo',
         settings: {
           host_video: true,
           participant_video: true,
@@ -36,10 +39,10 @@ export async function POST(req: NextRequest) {
 
     const data = await response.json();
     if (data.code == 124) {
-      return NextResponse.json({ message: data.message }, { status: data.code });
+      return NextResponse.json({ message: data.message }, { status: 400});
     }
     console.log(data);
-    const {  id, start_time } = data;
+    const {  id ,start_time} = data;
     const zoomMeetingId = id.toString();
     console.log(zoomMeetingId);
     // Save meeting to database
@@ -48,10 +51,11 @@ export async function POST(req: NextRequest) {
         user: { connect: { id: user.userId } },
         meetingId: zoomMeetingId,
         booking: {
-          connect: { id: bookId },
+          connect: { id: 1 },
         },
         startTime: start_time,
-        duration,
+        duration:Number(duration),
+        topic:topic
       },
     });
 

@@ -1,15 +1,25 @@
-import { NextResponse } from 'next/server';
+import { NextResponse ,NextRequest} from 'next/server';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import prisma from '../../../../utils/database';
+import prisma from '../../../utils/database';
 ;
 
 export  async function POST(req: Request) {
     const { email, password } = await req.json();
 
     if (!email || !password) {
-    return NextResponse.json({ message: 'Emailand password  are required' ,status:400});
+    return NextResponse.json({ message: 'Email and password are required'} ,{status:400});
    }
+
+   // validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ message: 'Invalid email'} ,{status:400});
+    }
+  // validate password
+    if (password.length < 6) {
+      return NextResponse.json({ message: 'Password must be at least 6 characters' },{status:400});
+    }
+      
  try{
   
    // Check if user already exists
@@ -20,7 +30,7 @@ export  async function POST(req: Request) {
     });
 
     if (existingUser) {
-      return NextResponse.json({ message: 'User already exists' ,status:400});
+      return NextResponse.json({ message: 'User already exists'} ,{status:400});
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -31,14 +41,12 @@ export  async function POST(req: Request) {
       },
     });
 
-    const token = jwt.sign({ userId: user.id,email:email }, process.env.JWT_SECRET!, {
-      expiresIn: '1h',
-    });
+   
 
-    return NextResponse.json({ token ,status:201});
+    return NextResponse.json({ user },{status:201});
   } 
   catch (error) {
-    console.error('Error during registration:', error);
-    return NextResponse.json({ message: 'Internal Server Error' ,status:500});
+    //console.error('Error during registration:', error);
+    return NextResponse.json({ message: 'Internal Server Error' },{status:500});
   }
 }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticate } from '@/utils/auth';
-import prisma from '@/utils/database';
+import { authenticate } from '@/app/utils/auth';
+import prisma from '@/app/utils/database';
 
 export async function DELETE(req: NextRequest, context: any) {
   const token = req.headers.get('Authorization')?.split(' ')[1];

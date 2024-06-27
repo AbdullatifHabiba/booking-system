@@ -1,10 +1,10 @@
-# create docker network for app with DB image
+version: "3.7"
+
 networks:
   app_net:
     driver: bridge
 
 
-version: '3'
 services:
   database:
     image: 'postgres:13-alpine'
@@ -18,14 +18,39 @@ services:
     networks:
 
       - app_net
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - '3000:3000'
-  #   networks:
-  #     - app_net
-  #   depends_on:
-  #     - database
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: boooking-app-dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    networks:
+      - app_net
+    depends_on:
+      - database
+
+  prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: boooking-app-prod
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    networks:
+      - app_net
+    depends_on: 
+      - database
+
+
+volumes:
+  node_modules:
 

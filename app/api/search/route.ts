@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/utils/database';
+import prisma from '@/app/utils/database';
 
 export async function GET(req: NextRequest) {
   const { search, startTime, endTime } = await req.json();

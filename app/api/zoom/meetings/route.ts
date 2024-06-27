@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticate } from '@/utils/auth';
-import prisma from '@/utils/database';
+import { authenticate } from '@/app/utils/auth';
+import prisma from '@/app/utils/database';
 // get all meetings for the logged-in user
 export async function GET(req: NextRequest) {
   const token = req.headers.get('Authorization')?.split(' ')[1];

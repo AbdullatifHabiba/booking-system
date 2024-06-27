@@ -1,0 +1,9 @@
+node_modules
+.next
+.vscode
+.env
+.swc
+coverage
+docs
+readme.md
+README.md

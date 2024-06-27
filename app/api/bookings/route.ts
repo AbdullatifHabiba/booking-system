@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticate } from '@/utils/auth';
-import prisma from '@/utils/database';
-import { sendEmailNotification } from '@/utils/notify';
+import { authenticate } from '@/app/utils/auth';
+import prisma from '@/app/utils/database';
+import { sendEmailNotification } from '@/app/utils/notify';
 
 // Create a new booking
 export async function POST(req: NextRequest) {
@@ -11,15 +11,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const { slotId  } = await req.json();
+  const { slot  } = await req.json();
   try {
     const booking = await prisma.booking.create({
       data: {
         user: { connect: { id: user.userId } },
-         slot: { connect: { id: slotId } },
+         slot: { connect: { id: Number(slot) } },
+         status: 'Pending',
       },
     });
-     sendEmailNotification(user.email, 'Booking Confirmation', `Your booking has been confirmed for ${slotId}`);
+     sendEmailNotification(user.email, 'Booking Confirmation', `Your booking has been confirmed for ${JSON.stringify(booking)}`);
 
     return NextResponse.json(booking, { status: 201 });
   } catch (error) {

@@ -4,6 +4,8 @@ FROM node:18-alpine AS build
 # Set working directory
 WORKDIR /app
 
+ENV IGNORE_POSTINSTALL=true
+
 # Copy package.json and package-lock.json
 COPY package*.json ./
 

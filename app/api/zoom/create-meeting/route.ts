@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { authenticate } from '@/app/utils/auth';
 import prisma from '@/app/utils/database';
-import { refreshAccessToken } from '@/app/api/zoom/auth/route';
+import { refreshAccessToken } from '@/app/api/zoom/auth/zoomAuth';
 import { getTokens } from '@/app/utils/tokenStore';
 
 export async function POST(req: NextRequest) {

@@ -21,8 +21,8 @@ services:
   dev:
     build:
       context: .
-      dockerfile: dockerfile.dev
-    container_name: boooking-app-dev
+      dockerfile: dockerfile
+    container_name: booking-app-dev
   
 
     volumes:
@@ -44,7 +44,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile.prod
-    container_name: boooking-app-prod
+    container_name: booking-app-prod
     ports:
       - "3000:3000"
     env_file:

@@ -1,6 +1,7 @@
 // app/api/zoom/callback/route.ts
 import { NextResponse } from 'next/server';
 import axios from 'axios';
+import { saveTokens } from '@/app/utils/tokenStore';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -13,34 +14,35 @@ export async function GET(request: Request) {
   const ZOOM_CLIENT_ID = process.env.ZOOM_CLIENT_ID!;
   const ZOOM_CLIENT_SECRET = process.env.ZOOM_CLIENT_SECRET!;
   const ZOOM_REDIRECT_URI = process.env.ZOOM_REDIRECT_URI!;
-console.log(ZOOM_CLIENT_ID,ZOOM_CLIENT_SECRET,ZOOM_REDIRECT_URI);
+
   const tokenUrl = 'https://zoom.us/oauth/token';
   const params = new URLSearchParams({
     grant_type: 'authorization_code',
-     code: code,
+    code: code,
     redirect_uri: ZOOM_REDIRECT_URI,
   });
-  console.log('params', params.toString());
 
   const auth = Buffer.from(`${ZOOM_CLIENT_ID}:${ZOOM_CLIENT_SECRET}`).toString('base64');
-  console.log('auth', auth);
 
   try {
     const response = await axios.post(tokenUrl, null, {
-      params: params,  
+      params: params,
       headers: {
-        Authorization: `Basic ${auth}`
+        Authorization: `Basic ${auth}`,
       },
     });
 
-    const accessToken = response.data.access_token;
+    const { access_token, refresh_token } = response.data;
 
-    // set as environment variable
-    process.env.ZOOM_ACCESS_TOKEN = accessToken;
+    // Replace `1` with the actual userId you want to associate with the tokens
+    // get userId from the jwt token
+    //
 
-    return NextResponse.json({ accessToken }, { status: 200 });
-  } catch (error) {
-    console.error('Error fetching access token:', (error as any).response ? (error as any).response.data : (error as any).message);
+    await saveTokens(3, { accessToken: access_token, refreshToken: refresh_token });
+
+    return NextResponse.json({ accessToken: access_token }, { status: 200 });
+  } catch (error ) {
+    console.error('Error fetching access token:', error);
     return NextResponse.json({ message: 'Failed to fetch access token' }, { status: 500 });
   }
 }

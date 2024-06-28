@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/utils/database';
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const { search, startTime, endTime } = await req.json();
 
   const filters: any = {};

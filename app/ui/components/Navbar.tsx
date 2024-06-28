@@ -19,10 +19,13 @@ export default function Navbar() {
         <li>
           <Link href="/ui/bookings">Bookings</Link>
         </li>
+        
+          <li>
+            <Link href="/ui/profile">Profile</Link>
+          </li>
+        
        
-        <li>
-          <Link href="/ui/slots/search">Search</Link>
-        </li>
+        
       </ul>
     </nav>
   );

@@ -1,8 +1,9 @@
 
 'use client';
 import React from 'react';
-
+import { useRouter } from 'next/navigation';
 export default function SignIn() {
+  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -24,8 +25,10 @@ export default function SignIn() {
       }
 
       const data = await response.json();
-      if (data.token) {
+      if (response.status === 200) {
       console.log('Sign In Successful:', data);
+      // show success message
+    router.push('/ui/slots');
       }
       else{
         // retunr error message

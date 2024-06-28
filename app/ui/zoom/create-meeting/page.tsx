@@ -1,19 +1,23 @@
 'use client'; 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MeetingCard from '../../components/MeetingCard';
+import {useRouter}from 'next/navigation'
 
 interface Meeting {
   id: number;
   meetingId: string;
   startTime: string;
   duration: number;
+
 }
 
 const CreateMeeting: React.FC = () => {
+  const router = useRouter();
   const [meetingDetails, setMeetingDetails] = useState({
     topic: '',
     startTime: '',
     duration: 0,
+    bookingId:1,
   });
 
   const [meeting, setMeeting] = useState<Meeting | null>(null);
@@ -46,6 +50,14 @@ const CreateMeeting: React.FC = () => {
   const handleBack = () => {
     setMeeting(null);
   };
+  // redirect to the meetings if the meeting is created
+  useEffect(() => {
+    if (meeting) {
+      router.push('/ui/meetings');
+    }
+  }
+);
+
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
@@ -53,6 +65,14 @@ const CreateMeeting: React.FC = () => {
         {!meeting ? (
           <form onSubmit={handleSubmit} style={{ background: 'white', padding: '1.5rem', borderRadius: '0.5rem', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', width: '100%', maxWidth: '400px' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Create Meeting</h2>
+            <input
+              type="number"
+              name="bookingId"
+              placeholder="Booking ID"
+              style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem', border: '1px solid #ccc', borderRadius: '0.25rem' }}
+              value={meetingDetails.bookingId}
+              onChange={handleChange}
+            />
             <input
               type="text"
               name="topic"

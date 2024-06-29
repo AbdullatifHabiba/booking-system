@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Booking System
 
-## Getting Started
+## Table of Contents
 
-First, run the development server:
+1. [Introduction](#introduction)
+2. [Database](#database)
+3. [JWT](#jwt)
+4. [Zoom Integration](#zoom-integration)
+5. [Email Notification](#email-notification)
+6. [Search Functionality](#search-functionality)
+7. [Testing and Postman Documentation](#testing-and-postman-documentation)
+8. [Docker Compose](#docker-compose)
+9. [CI/CD](#ci-cd)
+    - [Vercel](#vercel)
+    - [Docker Hub](#docker-hub)
+10. [Contributing](#contributing)
+11. [License](#license)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Introduction
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    -Book slots easily and efficiently
+    -Manage your meetings and bookings
+    -Get notified about upcoming events
+    -Search and filter available slots
+    -Integrate with Zoom for virtual meetings
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Database
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![erd](docs/erd.png)
 
-## Learn More
+## JWT
 
-To learn more about Next.js, take a look at the following resources:
+![JWT](docs/jwt.gif
+)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Zoom Integration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+[Discuss how Zoom integration is implemented, including authentication, meeting creation, and related functionalities.]
 
-## Deploy on Vercel
+## Email Notification
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+[Detail how email notifications are triggered and managed within the project, including any external services used.]
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Search Functionality
+
+[Explain the search capabilities implemented in the project and how they are integrated into the application.]
+
+## Testing and Postman Documentation
+
+[Describe the testing approach used in the project, including unit tests, integration tests, and API tests. Include instructions or links to Postman documentation for API endpoints.]
+
+## Docker Compose
+
+[Provide instructions or details on how Docker Compose is used to manage development environments or production deployments.]
+
+## CI/CD
+
+### Vercel
+
+[Explain the Continuous Integration and Continuous Deployment (CI/CD) setup using Vercel, including deployment workflows and configurations.]
+
+### Docker Hub
+
+[Describe the Docker Hub integration for containerized deployments, including Dockerfile setup and image management.]
+
+## Simple UI For Some Fuctionality
+![bookings](docs/bookings.gif)

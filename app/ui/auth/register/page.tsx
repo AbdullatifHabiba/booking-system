@@ -30,7 +30,7 @@ export default function SignUp() {
         // show success message
          
         // Redirect to the login page
-         router.push('/ui/login');
+         router.push('/ui/auth/login');
         
       } else {
         // Return error message

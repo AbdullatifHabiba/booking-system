@@ -52,7 +52,7 @@ const CreateMeeting: React.FC = () => {
   };
   // redirect to the meetings if the meeting is created
   useEffect(() => {
-    if (meeting) {
+    if (meeting?.meetingId) {
       router.push('/ui/meetings');
     }
   }

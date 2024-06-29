@@ -1,5 +1,6 @@
 // app/utils/zoomAuth.ts
 import axios from 'axios';
+import { NextResponse } from 'next/server';
 import { saveTokens, getStoredRefreshToken } from '@/app/utils/tokenStore';
 
 async function refreshAccessToken(userId: number) {
@@ -11,16 +12,7 @@ async function refreshAccessToken(userId: number) {
   if (!refreshToken) {
     // No refresh token available, generate the authorization URL and handle redirection
     const authUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${ZOOM_CLIENT_ID}&redirect_uri=${ZOOM_REDIRECT_URI}&state=${userId}`;
-    
-    // Redirect the user to the Zoom authorization page
-    if (typeof window !== 'undefined') {
-      window.location.href = authUrl;
-    } else {
-      // If running in a server environment, throw an error for further handling
-      throw new Error(`Redirect to Zoom authorization page: ${authUrl}`);
-    }
-    
-    return; // Return to prevent further execution
+    return NextResponse.redirect(authUrl, { status: 302 });// Redirect the user to the Zoom authorization page
   }
 
   const tokenUrl = 'https://zoom.us/oauth/token';

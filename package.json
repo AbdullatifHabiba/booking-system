@@ -10,8 +10,8 @@
       "lint": "next lint",
       "test": "jest",
       "test:watch": "jest --watch",
-    
-      "vercel-build": "prisma generate  && prisma migrate deploy && next build"
+      "postinstall": "if [ \"$IGNORE_POSTINSTALL\" != \"true\" ]; then prisma generate --schema=./app/db/prisma/schema.prisma; fi",
+      "vercel-build": "prisma generate && prisma migrate deploy && next build "
 
     },
   

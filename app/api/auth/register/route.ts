@@ -42,7 +42,6 @@ export  async function POST(req: Request) {
     });
 
    
-// regiser zoom token for the user
 
     return NextResponse.json({ user },{status:201});
   } 

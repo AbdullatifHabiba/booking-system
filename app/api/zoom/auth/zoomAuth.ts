@@ -9,11 +9,18 @@ async function refreshAccessToken(userId: number) {
   const refreshToken = await getStoredRefreshToken(userId);
 
   if (!refreshToken) {
+    // No refresh token available, generate the authorization URL and handle redirection
     const authUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${ZOOM_CLIENT_ID}&redirect_uri=${ZOOM_REDIRECT_URI}&state=${userId}`;
+    
     // Redirect the user to the Zoom authorization page
-    return authUrl;
-
-    throw new Error('No refresh token available');
+    if (typeof window !== 'undefined') {
+      window.location.href = authUrl;
+    } else {
+      // If running in a server environment, throw an error for further handling
+      throw new Error(`Redirect to Zoom authorization page: ${authUrl}`);
+    }
+    
+    return; // Return to prevent further execution
   }
 
   const tokenUrl = 'https://zoom.us/oauth/token';

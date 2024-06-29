@@ -47,7 +47,8 @@
 
 ## Testing and Postman Documentation
 
-[Describe the testing approach used in the project, including unit tests, integration tests, and API tests. Include instructions or links to Postman documentation for API endpoints.]
+[Describe the testing approach used in the project, including unit tests, integration tests, and API tests. 
+### [Postman API Docs](https://documenter.getpostman.com/view/30801951/2sA3duGDif)
 
 ## Docker Compose
 

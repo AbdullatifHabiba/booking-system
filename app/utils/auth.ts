@@ -7,7 +7,6 @@ export const authenticate = (token:any) => {
     throw new Error('Authentication token missing');
   }
   try {
- console.log("process.env.JWT_SECRET! \n",process .env.JWT_SECRET!);
   const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
   console.log("decoded \n",decoded);

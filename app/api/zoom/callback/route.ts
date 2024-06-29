@@ -6,6 +6,7 @@ import { saveTokens } from '@/app/utils/tokenStore';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get('code');
+  const userId = searchParams.get('state');
 
   if (!code) {
     return NextResponse.json({ message: 'Authorization code is missing' }, { status: 400 });
@@ -38,7 +39,7 @@ export async function GET(request: Request) {
     // get userId from the jwt token
     //
 
-    await saveTokens(3, { accessToken: access_token, refreshToken: refresh_token });
+    await saveTokens(Number(userId), { accessToken: access_token, refreshToken: refresh_token });
 
     return NextResponse.json({ accessToken: access_token }, { status: 200 });
   } catch (error ) {

@@ -1,6 +1,5 @@
 
 // app/page.tsx
-import Link from 'next/link';
 
 const HomePage = () => {
   return (
@@ -21,4 +20,5 @@ const HomePage = () => {
     </div>
   );
 };
+
 export default HomePage;

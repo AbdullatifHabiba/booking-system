@@ -11,7 +11,7 @@
       "test": "jest",
       "test:watch": "jest --watch",
     
-      "vercel-build": "prisma generate && prisma migrate deploy && next build --schema=./app/db/prisma/schema.prisma"
+      "vercel-build": "prisma generate --schema=./app/db/prisma/schema.prisma && prisma migrate deploy && next build"
 
     },
   

@@ -42,19 +42,22 @@ JSON Web Tokens (JWT) are used for securely transmitting information between the
 ### Sequence Diagram for JWT Process
 The following sequence diagram illustrates the JWT authentication flow:
 
-<img src="docs/jwtseq.png" alt="JWT Sequence Diagram" width="500" height="500">
+
+![JWT Sequence Diagram](docs/jwtseq.png)
 
 ## Zoom Integration
 
 The system integrates with Zoom to schedule virtual meetings. The sequence diagram below shows the Zoom integration process:
 
-<img src="docs/zoomseq.png" alt="Zoom Integration Sequence Diagram" width="500" height="500">
+
+
+![Zoom Integration Sequence Diagram](docs/zoomseq.png)
 
 ## Email Notification
 
 The system sends email notifications to users for booking confirmations and reminders. The diagram below illustrates the email notification flow:
 
-<img src="docs/emailseq.png" alt="Email Notification Sequence Diagram" width="500" height="500">
+![Email Notification Sequence Diagram](docs/emailseq.png)
 
 ## Search Functionality
 

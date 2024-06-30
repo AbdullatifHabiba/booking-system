@@ -35,15 +35,13 @@ export async function GET(request: Request) {
 
     const { access_token, refresh_token } = response.data;
 
-    // Replace `1` with the actual userId you want to associate with the tokens
-    // get userId from the jwt token
-    //
+    // save the tokens in secure storage
 
     await saveTokens(Number(userId), { accessToken: access_token, refreshToken: refresh_token });
 
     return NextResponse.json({ accessToken: access_token }, { status: 200 });
   } catch (error) {
-    console.error('Error fetching access token:', error);
-    return NextResponse.json({ message: 'Failed to fetch access token' }, { status: 500 });
+    console.error('Error fetching access token in callback :', error);
+    return NextResponse.json({ message: 'Failed to fetch access token in call back' }, { status: 500 });
   }
 }

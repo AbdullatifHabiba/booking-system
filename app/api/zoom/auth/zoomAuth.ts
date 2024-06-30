@@ -32,14 +32,14 @@ async function refreshAccessToken(userId: number) {
     });
 
     const { access_token, refresh_token } = response.data;
-
+  console.log('access_token', access_token);
     // Update tokens in secure storage
     await saveTokens(userId, { accessToken: access_token, refreshToken: refresh_token });
 
     return access_token;
   } catch (error) {
-    console.error('Error refreshing access token:', error);
-    throw new Error('Failed to refresh access token');
+    console.error('Error refreshing access token in zoom auth:', error);
+    throw new Error('Failed to refresh access token in zoomAuth');
   }
 }
 

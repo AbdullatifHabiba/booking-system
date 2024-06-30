@@ -1,0 +1,541 @@
+{
+	"info": {
+		"_postman_id": "98a12f67-1d8b-442b-bf87-6b9c4c4623eb",
+		"name": "booking_system",
+		"description": "The Booking System allows users to:\n\n- Book slots easily and efficiently.\n    \n- Manage meetings and bookings.\n    \n- Receive notifications about upcoming events.\n    \n- Search and filter available slots.\n    \n- Integrate with Zoom for virtual meetings.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30801951"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"m123m123m12385@gmail.com\",\n    \"password\":\"ando11s\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/auth/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"m123m123m12385@gmail.com\",\n    \"password\":\"ando11s\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/auth/register",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "book_slot_by_user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer  \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTcxOTMwMjE1NywiZXhwIjoxNzE5MzA1NzU3fQ.dRlmrS3KVODsyvxsoXAz-jC2v5kKLmZ3ofNvs91PgUA\"",
+						"type": "text"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Postman-Token",
+						"value": "<calculated when request is sent>",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Length",
+						"value": "<calculated when request is sent>",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Host",
+						"value": "<calculated when request is sent>",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "PostmanRuntime/7.32.1",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "*/*",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate, br",
+						"type": "text"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"slot\":1\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/bookings",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_bookings_per_user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer  \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTcxOTMwMjE1NywiZXhwIjoxNzE5MzA1NzU3fQ.dRlmrS3KVODsyvxsoXAz-jC2v5kKLmZ3ofNvs91PgUA\"",
+						"type": "text"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Postman-Token",
+						"value": "<calculated when request is sent>",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Length",
+						"value": "<calculated when request is sent>",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Host",
+						"value": "<calculated when request is sent>",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "PostmanRuntime/7.32.1",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "*/*",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate, br",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/bookings",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_available_slots",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/slots",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"slots"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_book_by_id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/bookings/11",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"bookings",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_book_by_id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/bookings/10",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"bookings",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_book_by_id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"slotId\":3\n\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/bookings/10",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"bookings",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_zoom_meeting",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"topic\":\"test meeting\",\n  \"type\":2,\n  \"duration\":30,\n  \"timezone\":\"Asia/Kolkata\",\n  \"bookId\":1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/zoom/create-meeting",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"zoom",
+						"create-meeting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_meetings",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/zoom/meetings",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"zoom",
+						"meetings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_slots",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/slots",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"slots"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search_over_slots",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"startTime\":\t\"2024-07-01T09:00:00.000Z\",\n     \"endTime\"\t:\"2024-07-01T13:00:00.000Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/search",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"search"
+					]
+				},
+				"description": "search over slots intervals"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_zoom_meeting_by_id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/zoom/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"zoom",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

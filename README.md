@@ -58,7 +58,11 @@ The system integrates with Zoom to schedule virtual meetings. The sequence diagr
 The system sends email notifications to users for booking confirmations and reminders. The diagram below illustrates the email notification flow:
 
 ![Email Notification Sequence Diagram](docs/emailseq.png)
+### Some Test Emails
 
+![createEmail](docs/createEmail.png)
+![deleteEmail](docs/deleteEmail.png)
+![updateEmail](docs/updateEmail.png)
 ## Search Functionality
 
 The search functionality allows users to filter and find available slots based on their criteria. This feature enhances the user experience by providing quick and efficient slot booking.

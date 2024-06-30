@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { authenticate } from '@/app/utils/auth';
 import prisma from '@/app/utils/database';
-
+import { refreshAccessToken } from '@/app/api/zoom/auth/zoomAuth';
+import { getTokens } from '@/app/utils/tokenStore';
 export async function DELETE(req: NextRequest, context: any) {
   const token = req.headers.get('Authorization')?.split(' ')[1];
   const user = authenticate(token);
@@ -18,11 +19,15 @@ export async function DELETE(req: NextRequest, context: any) {
     if (!meeting) {
       return NextResponse.json({ message: 'Meeting not found' }, { status: 404 });
     }
+    let accessToken = (await getTokens(user.userId))?.accessToken;
 
+    if (!accessToken) {
+      accessToken = await refreshAccessToken(user.userId);
+    }
     await fetch(`https://api.zoom.us/v2/meetings/${meeting.meetingId}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${process.env.ZOOM_ACCESS_TOKEN}`,
+        'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
     });

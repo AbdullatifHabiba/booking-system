@@ -3,6 +3,7 @@
  */
 
 import { DELETE, PUT, GET } from '../../../api/bookings/[id]/route';
+import { POST } from '../../../api/bookings/route';
 import prisma from '../../../utils/database';
 import { NextRequest } from 'next/server';
 import { authenticate } from '../../../utils/auth';
@@ -16,6 +17,7 @@ jest.mock('../../../utils/database', () => ({
       findUnique: jest.fn(),
       delete: jest.fn(),
       update: jest.fn(),
+      create: jest.fn(),
     },
   },
 }));
@@ -45,7 +47,7 @@ describe('test the bookings id end points', () => {
 
       (authenticate as jest.Mock).mockReturnValue(mockUser);
       (prisma.booking.delete as jest.Mock).mockResolvedValue({});
-      (sendEmailNotification as jest.Mock).mockResolvedValue({});   
+      (sendEmailNotification as jest.Mock).mockResolvedValue({});
       const response = await DELETE(mockRequest, mockContext);
 
       expect(response.status).toBe(200);
@@ -66,7 +68,7 @@ describe('test the bookings id end points', () => {
       };
 
       (authenticate as jest.Mock).mockImplementation(() => {
-         new Error('Authentication token missing');
+        new Error('Authentication token missing');
       });
 
       const response = await DELETE(mockRequest, mockContext);
@@ -104,15 +106,17 @@ describe('test the bookings id end points', () => {
 
 
       expect(response.status).toBe(200);
-      await expect(response.json()).resolves.toEqual({"booking":{
-        id: 1,
-        userId: 1,
-        slotId: 1,
-        zoomMeetingId: null,
-        status: 'pending',
-        createdAt: mockTime
-      }}
-    );
+      await expect(response.json()).resolves.toEqual({
+        "booking": {
+          id: 1,
+          userId: 1,
+          slotId: 1,
+          zoomMeetingId: null,
+          status: 'pending',
+          createdAt: mockTime
+        }
+      }
+      );
     });
 
     it('should return error when authentication token is missing', async () => {
@@ -127,7 +131,7 @@ describe('test the bookings id end points', () => {
       };
 
       (authenticate as jest.Mock).mockImplementation(() => {
-         new Error('Authentication token missing');
+        new Error('Authentication token missing');
       });
 
       const response = await GET(mockRequest, mockContext);
@@ -159,7 +163,7 @@ describe('test the bookings id end points', () => {
 
       (authenticate as jest.Mock).mockReturnValue(mockUser);
       (prisma.booking.update as jest.Mock).mockResolvedValue({
-      
+
         slotId: 1,
         id: 1,
         userId: 1,
@@ -167,7 +171,7 @@ describe('test the bookings id end points', () => {
         status: 'confirmed',
         createdAt: mockTime,
       });
-      (sendEmailNotification as jest.Mock).mockResolvedValue({});   
+      (sendEmailNotification as jest.Mock).mockResolvedValue({});
 
       const response = await PUT(mockRequest, mockContext);
 
@@ -192,7 +196,7 @@ describe('test the bookings id end points', () => {
       const mockContext = { params: { id: '1' } };
 
       (authenticate as jest.Mock).mockImplementation(() => {
-         new Error('Authentication token missing');
+        new Error('Authentication token missing');
       });
 
       const response = await PUT(mockRequest, mockContext);
@@ -201,4 +205,5 @@ describe('test the bookings id end points', () => {
       await expect(response.json()).resolves.toEqual({ message: 'Unauthorized' });
     });
   });
+
 });

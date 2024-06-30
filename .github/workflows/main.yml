@@ -1,5 +1,8 @@
 name: Build, Test, and Push Docker Image
-
+env:
+  
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
   push:
     branches:
@@ -42,3 +45,14 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/booking-app:latest
+          # push updates to vercel app
+      #INSTALL VERCEL CLI IN SERVER.
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+        #SET ENVIRONMENT IN VERCEL.
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=development --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}     

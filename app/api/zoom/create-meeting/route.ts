@@ -12,8 +12,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const { topic, duration, startTime,bookingId } = await req.json();
-  console.log(topic, duration, startTime,bookingId);
+  const { topic, duration, startTime, bookingId } = await req.json();
+  console.log(topic, duration, startTime, bookingId);
 
   let accessToken = (await getTokens(user.userId))?.accessToken;
 
@@ -78,11 +78,11 @@ export async function POST(req: NextRequest) {
       if (retryData.code) {
         return NextResponse.json({ message: retryData.message }, { status: 400 });
       }
-      return handleMeetingCreation(user, retryData, duration, topic,bookingId);
+      return handleMeetingCreation(user, retryData, duration, topic, bookingId);
     } else if (data.code) {
       return NextResponse.json({ message: data.message }, { status: 400 });
     } else {
-      return handleMeetingCreation(user, data, duration, topic,bookingId);
+      return handleMeetingCreation(user, data, duration, topic, bookingId);
     }
   } catch (error) {
     console.log(error);
@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-async function handleMeetingCreation(user: any, data: any, duration: number, topic: string,bookingId:number) {
+async function handleMeetingCreation(user: any, data: any, duration: number, topic: string, bookingId: number) {
   const { id, start_time } = data;
   const zoomMeetingId = id.toString();
   console.log(zoomMeetingId);
@@ -100,8 +100,8 @@ async function handleMeetingCreation(user: any, data: any, duration: number, top
       user: { connect: { id: user.userId } },
       meetingId: zoomMeetingId,
       booking: {
-        connect: { 
-          id: Number(bookingId) ,
+        connect: {
+          id: Number(bookingId),
           userId: user.userId
         },
       },

@@ -33,8 +33,8 @@ describe('POST /api/auth/login', () => {
   });
 
   it('should return 400 if email or password is missing', async () => {
-    const requestObj ={
-      json: async () => ({  
+    const requestObj = {
+      json: async () => ({
       }),
     }
     const response = await POST(requestObj as any);
@@ -52,7 +52,7 @@ describe('POST /api/auth/login', () => {
       }),
     } as any;
 
-(prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
+    (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
     const response = await POST(requestObj);
 
     expect(response.status).toBe(400);
@@ -124,7 +124,7 @@ describe('POST /api/auth/login', () => {
     const body = await response.json();
     expect(body).toEqual({ message: 'Internal Server Error' });
   });
- 
 
- 
+
+
 });

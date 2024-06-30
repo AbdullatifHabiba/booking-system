@@ -40,19 +40,7 @@ services:
  
 
 
-  prod:
-    build:
-      context: .
-      dockerfile: dockerfile.prod
-    container_name: booking-app-prod
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env
-    networks:
-      - app_net
-    depends_on: 
-      - database
+ 
 
 
 volumes:

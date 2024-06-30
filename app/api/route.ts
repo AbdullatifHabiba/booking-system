@@ -1,3 +1,4 @@
+import { authenticate } from '../utils/auth';
 import prisma from '../utils/database';
 import { NextResponse } from 'next/server';
 

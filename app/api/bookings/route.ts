@@ -4,6 +4,7 @@ import prisma from '@/app/utils/database';
 import { sendEmailNotification } from '@/app/utils/notify';
 
 // Create a new booking
+
 export async function POST(req: NextRequest) {
   const token = req.headers.get('Authorization')?.split(' ')[1];
   const user = authenticate(token);
@@ -11,21 +12,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const { slot  } = await req.json();
+  const { slot } = await req.json();
   try {
     const booking = await prisma.booking.create({
       data: {
         user: { connect: { id: user.userId } },
-         slot: { connect: { id: Number(slot) } },
-         status: 'Pending',
+        slot: { connect: { id: Number(slot) } },
+        status: 'Pending',
       },
     });
-     sendEmailNotification(user.email, 'Booking Confirmation', `Your booking has been confirmed for ${JSON.stringify(booking)}`);
-
-    return NextResponse.json(booking, { status: 201 });
+    sendEmailNotification(user.email, 'Booking Confirmation', `Your booking has been confirmed for ${JSON.stringify(booking)}`);
+    console.log(booking);
+    return NextResponse.json({ booking }, { status: 201 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ message: 'Error creating booking',"error":error }, { status: 500 });
+    return NextResponse.json({ message: 'Error creating booking', "error": error }, { status: 500 });
   }
 }
 

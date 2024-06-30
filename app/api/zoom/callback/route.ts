@@ -42,7 +42,7 @@ export async function GET(request: Request) {
     await saveTokens(Number(userId), { accessToken: access_token, refreshToken: refresh_token });
 
     return NextResponse.json({ accessToken: access_token }, { status: 200 });
-  } catch (error ) {
+  } catch (error) {
     console.error('Error fetching access token:', error);
     return NextResponse.json({ message: 'Failed to fetch access token' }, { status: 500 });
   }

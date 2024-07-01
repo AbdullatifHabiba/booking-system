@@ -61,7 +61,7 @@ The system integrates with Zoom to schedule virtual meetings. The sequence diagr
 
 
 <p align="center">
- <img src="docs/zoomseq.png" alt="Zoom" width="700" height="500">
+ <img src="docs/zoomseq.png" alt="Zoom" width="700" height="700">
 </p>
 
 ## Email Notification

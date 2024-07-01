@@ -111,5 +111,5 @@ async function handleMeetingCreation(user: any, data: any, duration: number, top
     },
   });
 
-  return NextResponse.json(meeting, { status: 201 });
+  return NextResponse.json({meeting}, { status: 201 });
 }

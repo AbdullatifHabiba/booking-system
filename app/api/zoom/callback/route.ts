@@ -28,7 +28,7 @@ export async function GET(request: Request) {
   try {
     const response = await axios.post(tokenUrl, null, {
       params: params,
-      headers: {
+            headers: {
         Authorization: `Basic ${auth}`,
       },
     });

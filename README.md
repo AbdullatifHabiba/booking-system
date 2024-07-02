@@ -30,34 +30,49 @@ The Booking System allows users to:
 
 The system uses PostgreSQL as the database. Below is the Entity-Relationship Diagram (ERD) for the database schema:
 
+<p align="center">
 <img src="docs/erd.png" alt="erd" width="700" height="500">
+</p>
 
 ## JWT Authentication
 
 ### General Overview
+
 JSON Web Tokens (JWT) are used for securely transmitting information between the client and server.
 
+<p align="center">
 <img src="docs/jwt.gif" alt="JWT" width="500" height="300">
+</p>
+
 
 ### Sequence Diagram for JWT Process
+
+
 The following sequence diagram illustrates the JWT authentication flow:
 
 
-![JWT Sequence Diagram](docs/jwtseq.png)
+<p align="center">
+    <img src="docs/jwtseq.png" alt="JWT" width="700" height="500">
+</p>
 
 ## Zoom Integration
 
 The system integrates with Zoom to schedule virtual meetings. The sequence diagram below shows the Zoom integration process:
 
 
-
-![Zoom Integration Sequence Diagram](docs/zoomseq.png)
+<p align="center">
+ <img src="docs/zoomseq.png" alt="Zoom" width="700" height="700">
+</p>
 
 ## Email Notification
 
 The system sends email notifications to users for booking confirmations and reminders. The diagram below illustrates the email notification flow:
 
-![Email Notification Sequence Diagram](docs/emailseq.png)
+
+<p align="center">
+ <img src="docs/emailseq.png" alt="Email" width="700" height="500">
+</p>
+
 ### Some Test Emails
 
 ![createEmail](docs/createEmail.png)
@@ -112,7 +127,12 @@ docker-compose up --build database dev
 ## CI/CD
 
 Continuous Integration and Continuous Deployment (CI/CD) pipelines are configured to ensure smooth deployment processes.
-<img src="docs/cicd.gif" alt="CI/CD Diagram" width="500" height="400">
+
+
+<p align="center">
+    <img src="docs/cicd.gif" alt="CI/CD Diagram" width="500" height="400">
+</p>
+
 
 ### Vercel
 
@@ -121,11 +141,11 @@ Vercel is used for deploying the  application.
 
 
 
-## Simple UI for Some Functionality
+## Simple UI for Some Functionalities
 
 Below is a preview of the UI for managing bookings:
 
-<img src="docs/bookings.gif" alt="Bookings UI" width="1000" height="500">
+![Bookings UI](docs/bookings.gif)
 
 ## Contributing
 

@@ -145,7 +145,7 @@ Vercel is used for deploying the  application.
 
 Below is a preview of the UI for managing bookings:
 
-![Bookings UI](docs/bookings.gif)
+![Bookings UI](docs/ui.gif)
 
 ## Contributing
 

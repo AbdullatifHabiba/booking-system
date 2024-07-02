@@ -15,10 +15,10 @@ export async function GET() {
             },
         },
     );
-    const data = await request.data;
+   const { access_token, refresh_token, expires_in } = await request.data;
 
-	console.log(data)
-	const { access_token, refresh_token, expires_in } = data;
+	//console.log(data)
+
     return NextResponse.json({ access_token, refresh_token, expires_in }, { status: 200 });
   
 }

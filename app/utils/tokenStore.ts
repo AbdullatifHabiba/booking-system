@@ -1,48 +1,18 @@
-// app/utils/tokenStore.ts
-import prisma from './database';
+import axios from 'axios';
+import qs from 'querystring';
+export  async function  getAccessToken(){
 
-interface Tokens {
-  accessToken: string;
-  refreshToken: string;
+    const { ZOOM_ACCOUNT_ID, ZOOM_CLIENT_ID_S, ZOOM_CLIENT_SECRET_S } = process.env;
+    const request = await axios.post(
+        'https://zoom.us/oauth/token',
+        qs.stringify({ grant_type: 'account_credentials', account_id: ZOOM_ACCOUNT_ID }),
+        {
+            headers: {
+                Authorization: `Basic ${Buffer.from(`${ZOOM_CLIENT_ID_S}:${ZOOM_CLIENT_SECRET_S}`).toString('base64')}`,
+            },
+        },
+    );
+   const { access_token } = await request.data;
+   return access_token;
+
 }
-
-// Save tokens to the database
-async function saveTokens(userId: number, tokens: Tokens): Promise<void> {
-  await prisma.token.upsert({
-    where: { userId: userId },
-    update: {
-      accessToken: tokens.accessToken,
-      refreshToken: tokens.refreshToken,
-      updatedAt: new Date(),
-    },
-    create: {
-      userId: userId,
-      accessToken: tokens.accessToken,
-      refreshToken: tokens.refreshToken,
-    },
-  });
-}
-
-// Retrieve tokens from the database
-async function getTokens(userId: number): Promise<Tokens | null> {
-
-console.log("userId", userId)
-  const token = await prisma.token.findUnique({
-    where: { userId: userId },
-  });
-  if (token) {
-    return {
-      accessToken: token.accessToken,
-      refreshToken: token.refreshToken,
-    };
-  }
-  return null;
-}
-
-// Get stored refresh token
-async function getStoredRefreshToken(userId: number): Promise<string | null> {
-  const tokens = await getTokens(userId);
-  return tokens?.refreshToken || null;
-}
-
-export { saveTokens, getTokens, getStoredRefreshToken };

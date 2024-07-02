@@ -19,6 +19,9 @@ jest.mock('../../utils/database', () => ({
             create: jest.fn(),
             findMany: jest.fn(),
         },
+        slot: {
+            update: jest.fn(),
+        },
     },
 }));
 
@@ -43,6 +46,7 @@ describe('test the bookings id end points', () => {
 
         (authenticate as jest.Mock).mockReturnValue(mockUser);
         (prisma.booking.create as jest.Mock).mockResolvedValue(mockBooking);
+        (prisma.slot.update as jest.Mock).mockResolvedValue({});
         (sendEmailNotification as jest.Mock).mockResolvedValue({});
 
         const response = await POST(mockRequest);

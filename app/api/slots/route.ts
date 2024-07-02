@@ -7,8 +7,9 @@ export async function GET() {
   try {
     const slots = await prisma.slot.findMany({
       orderBy: {
-        startTime: 'asc',
+        startTime: 'desc',
       },
+     
     });
     return NextResponse.json(slots, { status: 200 });
   } catch (error) {
@@ -24,10 +25,12 @@ export async function POST(req: Request) {
   if (user.email !== process.env.EMAIL_USER) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
-  const { slots } = await req.json();
+  const data = await req.json();
+  console.log(data);
+
   try {
     await prisma.slot.createMany({
-      data: slots,
+      data: data,
     });
     return NextResponse.json({ message: 'Slots created', status: 201 });
   } catch (error) {

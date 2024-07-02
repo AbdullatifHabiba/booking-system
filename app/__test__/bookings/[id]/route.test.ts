@@ -19,6 +19,9 @@ jest.mock('../../../utils/database', () => ({
       update: jest.fn(),
       create: jest.fn(),
     },
+    slot: {
+      update: jest.fn(),
+    },
   },
 }));
 
@@ -47,6 +50,7 @@ describe('test the bookings id end points', () => {
 
       (authenticate as jest.Mock).mockReturnValue(mockUser);
       (prisma.booking.delete as jest.Mock).mockResolvedValue({});
+      (prisma.slot.update as jest.Mock).mockResolvedValue({});
       (sendEmailNotification as jest.Mock).mockResolvedValue({});
       const response = await DELETE(mockRequest, mockContext);
 

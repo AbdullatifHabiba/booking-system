@@ -5,8 +5,7 @@ import prisma from "../../../utils/database";
 import { authenticate } from "../../../utils/auth";
 import { NextRequest } from "next/server";
 import { POST } from "../../../api/zoom/create-meeting/route";
-import { refreshAccessToken } from "../../../api/zoom/auth/zoomAuth";
-import { getTokens } from "../../../utils/tokenStore";
+import { getAccessToken } from "../../../utils/tokenStore";
 
 jest.mock('../../../utils/database', () => ({
     __esModule: true,
@@ -18,6 +17,10 @@ jest.mock('../../../utils/database', () => ({
             create: jest.fn(),
             findMany: jest.fn(),
         },
+        booking: {
+            update: jest.fn(),
+        },
+
     },
 }));
 jest.mock('../../../utils/auth', () => ({
@@ -25,12 +28,10 @@ jest.mock('../../../utils/auth', () => ({
 }));
 
 jest.mock('../../../utils/tokenStore', () => ({
-    getTokens: jest.fn()
+    getAccessToken: jest.fn()
 }));
 
-jest.mock('../../../api/zoom/auth/zoomAuth', () => ({
-    refreshAccessToken: jest.fn()
-}));
+
 
 describe('create meeting', () => {
 
@@ -66,9 +67,9 @@ describe('create meeting', () => {
             });
             // mock prisma
             (prisma.meeting.create as jest.Mock).mockResolvedValue({ id: 'meetingId', start_time: '2023-10-10T10:00:00Z' });
+            (prisma.booking.update as jest.Mock).mockResolvedValue({ id: 123, status: 'Meeting Created' });
             (authenticate as jest.Mock).mockReturnValue(mockUser);
-            (getTokens as jest.Mock).mockResolvedValue({ accessToken: 'existingAccessToken' });
-            (refreshAccessToken as jest.Mock).mockResolvedValue('newAccessToken');
+            (getAccessToken as jest.Mock).mockResolvedValue('newAccessToken');
 
             const response = await POST(mockRequest as unknown as NextRequest);
 

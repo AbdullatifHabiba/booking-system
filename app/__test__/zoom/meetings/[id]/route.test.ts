@@ -6,7 +6,7 @@ import { DELETE } from '../../../../api/zoom/meetings/[id]/route';
 import prisma from '../../../../utils/database';
 import { NextRequest } from 'next/server';
 import { authenticate } from '../../../../utils/auth';
-import { getTokens } from '../../../../utils/tokenStore';
+import { getAccessToken } from '../../../../utils/tokenStore';
 
 
 // Mock prisma
@@ -20,6 +20,9 @@ jest.mock('../../../../utils/database', () => ({
             create: jest.fn(),
             findMany: jest.fn(),
         },
+        booking: {
+            update: jest.fn(),
+        },
     },
 }));
 
@@ -29,12 +32,9 @@ jest.mock('../../../../utils/auth', () => ({
 }));
 
 jest.mock('../../../../utils/tokenStore', () => ({
-    getTokens: jest.fn()
+    getAccessToken: jest.fn()
 }));
 
-jest.mock('../../../../api/zoom/auth/zoomAuth', () => ({
-    refreshAccessToken: jest.fn()
-}));
 
 describe('test the DELETE endpoint for deleting meetings', () => {
     beforeEach(() => {
@@ -57,7 +57,7 @@ describe('test the DELETE endpoint for deleting meetings', () => {
 
         (authenticate as jest.Mock).mockReturnValue(mockUser);
         (prisma.meeting.findUnique as jest.Mock).mockResolvedValue(mockMeeting);
-        (getTokens as jest.Mock).mockResolvedValue({ accessToken: mockAccessToken });
+        (getAccessToken as jest.Mock).mockResolvedValue(mockAccessToken);
         (prisma.meeting.delete as jest.Mock).mockResolvedValue({});
 
         const response = await DELETE(mockRequest, mockContext);
@@ -65,7 +65,6 @@ describe('test the DELETE endpoint for deleting meetings', () => {
         expect(response.status).toBe(200);
         expect(authenticate).toHaveBeenCalledWith('validToken');
         expect(prisma.meeting.findUnique).toHaveBeenCalledWith({ where: { id: 1 } });
-        expect(getTokens).toHaveBeenCalledWith(1);
         expect(prisma.meeting.delete).toHaveBeenCalledWith({ where: { id: 1 } });
     });
 

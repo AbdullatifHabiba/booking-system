@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
       where: { userId: user.userId },
     });
 
-    return NextResponse.json({meetings}, { status: 200 });
+    return NextResponse.json(meetings, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: 'Error fetching meetings' }, { status: 500 });
   }

@@ -27,6 +27,7 @@ export default function SignIn() {
       const data = await response.json();
       if (response.status === 200) {
       console.log('Sign In Successful:', data);
+      // Store the response in sessionStorage
       // show success message
     router.push('/ui/slots');
       }
@@ -39,6 +40,7 @@ export default function SignIn() {
       
       // Store the response in sessionStorage
       sessionStorage.setItem('jwt', JSON.stringify(data.token));
+      sessionStorage.setItem('email', JSON.stringify(email));
 
       // Handle successful sign-in (e.g., redirect, update UI)
     } catch (error) {

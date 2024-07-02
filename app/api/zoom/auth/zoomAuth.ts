@@ -12,6 +12,7 @@ async function refreshAccessToken(userId: number) {
   if (!refreshToken) {
     // No refresh token available, generate the authorization URL and handle redirection
     const authUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${ZOOM_CLIENT_ID}&redirect_uri=${ZOOM_REDIRECT_URI}&state=${userId}`;
+    console.log("authUrl", authUrl);
     return NextResponse.redirect(authUrl, { status: 302 });// Redirect the user to the Zoom authorization page
   }
 

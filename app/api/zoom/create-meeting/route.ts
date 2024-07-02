@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   console.log(topic, duration, startTime, bookingId);
 
   let accessToken = (await getTokens(user.userId))?.accessToken;
-
+   console.log('accessToken when creating meeting ', accessToken);
   if (!accessToken) {
     accessToken = await refreshAccessToken(user.userId);
   }

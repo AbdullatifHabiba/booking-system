@@ -16,5 +16,7 @@ export async function GET() {
         },
     );
     const data = await request.data;
-    return NextResponse.json({ data }, { status: 200 });
+    const {access_token, refresh_token} = data
+console.log(data)
+    return NextResponse.json({ ,access_token,refresh_token }, { status: 200 });
 }

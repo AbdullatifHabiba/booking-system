@@ -166,7 +166,9 @@ docker-compose up --build database dev
 ## CI/CD
 
 Continuous Integration and Continuous Deployment (CI/CD) pipelines are configured to ensure smooth deployment processes.
-
+<p align="center">
+<img src="docs/cicd.gif" alt="cicd Preview" width="700" height="500">
+</p>
 ### Docker Hub
 
 Docker Hub is used to store Docker images for the application. These images allow the application to be deployed on any cloud platform that supports Docker.
@@ -194,6 +196,6 @@ Ensure that you add `VERCEL_TOKEN` to your repository secrets in GitHub.
 Below is a preview of the UI for managing bookings:
 
 <p align="center">
-<img src="docs/ui.gif" alt="UI Preview" width="700" height="500">
+<img src="docs/ui.gif" alt="UI Preview" width="1000" height="500">
 </p>
 

@@ -4,8 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL")
-
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -13,17 +12,22 @@ model User {
   email     String    @unique
   password  String
   createdAt DateTime  @default(now())
-  Booking   Booking[]
-  Meeting   Meeting[]
-  Token     Token[]
+  bookings  Booking[]
+  meetings  Meeting[]
 }
 
 model Slot {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   startTime DateTime
   endTime   DateTime
-  createdAt DateTime  @default(now())
-  bookings  Booking[]
+  status    String // Status field added
+  createdAt DateTime @default(now())
+
+  // Relation to Booking
+  bookings Booking[] // No need for @relation here
+
+  // Unique constraint on startTime and endTime
+  @@unique([startTime, endTime])
 }
 
 model Booking {
@@ -31,11 +35,11 @@ model Booking {
   userId        Int
   user          User      @relation(fields: [userId], references: [id])
   slotId        Int
-  slot          Slot      @relation(fields: [slotId], references: [id])
-  zoomMeetingId String?   // Field for Zoom meeting ID
-  status        String  
+  slot          Slot      @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  zoomMeetingId String? // Field for Zoom meeting ID
+  status        String
   createdAt     DateTime  @default(now())
-  Meeting       Meeting[]
+  meetings      Meeting[] // No need for @relation here
 
   @@index([userId], name: "booking_user_id_index")
 }
@@ -47,20 +51,9 @@ model Meeting {
   user      User     @relation(fields: [userId], references: [id])
   meetingId String   @unique // Assuming Zoom meeting ID is a string
   bookingId Int
-  booking   Booking  @relation(fields: [bookingId], references: [id])
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
   startTime DateTime
   duration  Int
 
   @@index([userId], name: "meeting_user_id_index")
-}
-
-model Token {
-  id          Int      @id @default(autoincrement())
-  userId      Int      @unique
-  accessToken String
-  refreshToken String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id])
 }

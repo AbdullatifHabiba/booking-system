@@ -58,7 +58,7 @@ export default function CreateBooking() {
     if (showSuccessMessage) {
       const timer = setTimeout(() => {
         router.push('/ui/bookings'); // Change '/success' to the desired route
-      }, 5000); // Show success message for 2 seconds
+      }, 3000); // Show success message for 3 seconds
 
       return () => clearTimeout(timer);
     }

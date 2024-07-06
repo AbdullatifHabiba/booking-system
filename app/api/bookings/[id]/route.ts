@@ -14,8 +14,14 @@ export async function DELETE(req: NextRequest, context: any) {
 
   const { id } = context.params;
   try {
-    await prisma.booking.delete({
+  const booking=  await prisma.booking.delete({
       where: { id: Number(id) },
+    });
+    // update slot status
+    await prisma.slot.update({
+      where: { id: Number(booking.slotId) },   
+      data: { status: 'free' },
+
     });
     sendEmailNotification(user.email, 'Booking Deleted', `Your booking has been deleted with id ${id}`)
 

@@ -1,30 +1,15 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { format, parse, startOfWeek, getDay } from 'date-fns';
+import { format } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 
 interface Slot {
   id: number;
   startTime: string;
   endTime: string;
-  backgroundColor?: string;
+  status: string; // New status field
 }
-
-const locales = {
-  'en-US': enUS,
-};
-
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek: () => startOfWeek(new Date(), { locale: enUS }),
-  getDay,
-  locales,
-});
 
 async function fetchSlots(): Promise<Slot[]> {
   try {
@@ -47,7 +32,6 @@ async function fetchSlots(): Promise<Slot[]> {
 function Slots() {
   const [slots, setSlots] = useState<Slot[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [filteredSlots, setFilteredSlots] = useState<Slot[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,64 +42,44 @@ function Slots() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const results = slots.filter(slot =>
-      slot.startTime.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      slot.endTime.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredSlots(results);
-  }, [searchTerm, slots]);
-
-  const events = filteredSlots.map(slot => ({
-    title: `Slot ${slot.id}`,
-    start: new Date(slot.startTime),
-    end: new Date(slot.endTime),
-    allDay: false,
-    resource: {
-      backgroundColor: slot.backgroundColor,
-    },
-  }));
-
-  const eventPropGetter = (event: any) => {
-    const backgroundColor = event.resource?.backgroundColor || 'white';
-    return { style: { backgroundColor } };
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
+  const filteredSlots = slots.filter(slot =>
+    slot.startTime.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    slot.endTime.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    slot.status.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div>
-      <h2>Available Slots</h2>
-      <div className="p-4 mb-4">
-        <h2 className="text-2xl mb-4">Search</h2>
-        <input type="text" placeholder="Search..." className="w-full p-2 mb-4 border rounded"
+    <div className="container mx-auto p-6">
+      <h2 className="text-2xl mb-4">Available Slots</h2>
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search..."
+          className="w-full p-2 mb-4 border rounded"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearchChange}
         />
       </div>
-      {/* <div style={{ height: 500 }}>
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500 }}
-          eventPropGetter={eventPropGetter}
-        />
-      </div> */}
-        <li className="border p-4 mb-4">
-          id - startTime - endTime
-          </li>
-      {filteredSlots.length > 0 ? (
-      
-        <ul>
-          {filteredSlots.map(slot => (
-            <li key={slot.id} className="border p-4 mb-4">
-              {slot.id}-{slot.startTime} - {slot.endTime}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No slots available</p>
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {filteredSlots.length > 0 ? (
+          filteredSlots.map(slot => (
+            <div key={slot.id} className="bg-white rounded-lg shadow-md p-4">
+             <p className="text-lg font-bold">ID: { slot.id}</p>
+
+              <p className="text-lg font-bold">{format(new Date(slot.startTime), 'PPPPp', { locale: enUS })}</p>
+              <p className="text-lg font-bold">{format(new Date(slot.endTime), 'PPPPp', { locale: enUS })}</p>
+
+              <p className="text-sm mb-2">{slot.status}</p>
+            </div>
+          ))
+        ) : (
+          <p className="text-lg">No slots available</p>
+        )}
+      </div>
     </div>
   );
 }

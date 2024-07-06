@@ -21,6 +21,12 @@ export async function POST(req: NextRequest) {
         status: 'Pending',
       },
     });
+    // update slot status
+    await prisma.slot.update({
+      where: { id: Number(slot) },
+      data: { status: 'Booked' },
+    });
+    // send email notification
     sendEmailNotification(user.email, 'Booking Confirmation', `Your booking has been confirmed for ${JSON.stringify(booking)}`);
     console.log(booking);
     return NextResponse.json({ booking }, { status: 201 });

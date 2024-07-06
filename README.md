@@ -4,18 +4,19 @@
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Database](#database)
-3. [JWT Authentication](#jwt-authentication)
-4. [Zoom Integration](#zoom-integration)
-5. [Email Notification](#email-notification)
-6. [Search Functionality](#search-functionality)
-7. [Testing and Postman Documentation](#testing-and-postman-documentation)
-8. [Docker Compose](#docker-compose)
-9. [CI/CD](#ci-cd)
-    - [Vercel](#vercel)
+2. [Usage](#usage)
+3. [Database](#database)
+4. [JWT Authentication](#jwt-authentication)
+5. [Zoom Integration](#zoom-integration)
+6. [Email Notification](#email-notification)
+7. [Search Functionality](#search-functionality)
+8. [Testing and Postman Documentation](#testing-and-postman-documentation)
+9. [Environment Variables](#environment-variables)
+10. [Docker Compose](#docker-compose)
+11. [CI/CD](#ci-cd)
     - [Docker Hub](#docker-hub)
-10. [Contributing](#contributing)
-11. [License](#license)
+    - [Vercel](#vercel)
+
 
 ## Introduction
 
@@ -26,43 +27,96 @@ The Booking System allows users to:
 - Search and filter available slots.
 - Integrate with Zoom for virtual meetings.
 
+## Usage
+
+### Running the Application
+
+1. **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-repo/booking-system.git
+    cd booking-system
+    ```
+
+2. **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3. **Set up environment variables:** 
+    Create a `.env` file in the root directory and add the required environment variables. Refer to the [Environment Variables](#environment-variables) section for the details.
+
+4. **Run the application:**
+    ```bash
+    npm run dev
+    ```
+
+### Booking a Slot
+
+1. **Access the application** in your browser at `http://localhost:3000`.
+
+2. **Log in or register** to access the booking system.
+
+3. **Navigate to the booking page** and select the desired slot.
+
+4. **Confirm your booking**. You will receive a confirmation email if the process is successful.
+
 ## Database
 
 The system uses PostgreSQL as the database. Below is the Entity-Relationship Diagram (ERD) for the database schema:
 
-<img src="docs/erd.png" alt="erd" width="700" height="500">
+<p align="center">
+<img src="docs/prisma-erd.svg" alt="erd" width="700" height="500">
+</p>
 
 ## JWT Authentication
 
 ### General Overview
+
 JSON Web Tokens (JWT) are used for securely transmitting information between the client and server.
 
+<p align="center">
 <img src="docs/jwt.gif" alt="JWT" width="500" height="300">
+</p>
 
 ### Sequence Diagram for JWT Process
+
 The following sequence diagram illustrates the JWT authentication flow:
 
-
-![JWT Sequence Diagram](docs/jwtseq.png)
+<p align="center">
+    <img src="docs/jwtseq.png" alt="JWT" width="700" height="500">
+</p>
 
 ## Zoom Integration
 
 The system integrates with Zoom to schedule virtual meetings. The sequence diagram below shows the Zoom integration process:
 
-
-
-![Zoom Integration Sequence Diagram](docs/zoomseq.png)
+<p align="center">
+ <img src="docs/zoomseq.png" alt="Zoom" width="700" height="700">
+</p>
 
 ## Email Notification
 
 The system sends email notifications to users for booking confirmations and reminders. The diagram below illustrates the email notification flow:
 
-![Email Notification Sequence Diagram](docs/emailseq.png)
-### Some Test Emails
+<p align="center">
+ <img src="docs/emailseq.png" alt="Email" width="700" height="500">
+</p>
 
-![createEmail](docs/createEmail.png)
-![deleteEmail](docs/deleteEmail.png)
-![updateEmail](docs/updateEmail.png)
+### Sample Emails
+
+- Booking Creation:
+    <p align="center">
+    <img src="docs/createEmail.png" alt="Create Email" width="1000" height="300">
+    </p>
+- Booking Deletion:
+    <p align="center">
+    <img src="docs/deleteEmail.png" alt="Delete Email" width="1000" height="300">
+    </p>
+- Booking Update:
+    <p align="center">
+    <img src="docs/updateEmail.png" alt="Update Email" width="1000" height="300">
+    </p>
+
 ## Search Functionality
 
 The search functionality allows users to filter and find available slots based on their criteria. This feature enhances the user experience by providing quick and efficient slot booking.
@@ -112,27 +166,34 @@ docker-compose up --build database dev
 ## CI/CD
 
 Continuous Integration and Continuous Deployment (CI/CD) pipelines are configured to ensure smooth deployment processes.
-<img src="docs/cicd.gif" alt="CI/CD Diagram" width="500" height="400">
+
+### Docker Hub
+
+Docker Hub is used to store Docker images for the application. These images allow the application to be deployed on any cloud platform that supports Docker.
+
+- **Building the Docker image:**
+    ```bash
+    docker build -t your-dockerhub-username/booking-system:latest .
+    ```
+
+- **Pushing the Docker image to Docker Hub:**
+    ```bash
+    docker push your-dockerhub-username/booking-system:latest
+    ```
 
 ### Vercel
 
-Vercel is used for deploying the  application.
+Vercel is used for deploying the application. Vercel supports integration with GitHub Actions to enable continuous deployment.
 
 
 
+Ensure that you add `VERCEL_TOKEN` to your repository secrets in GitHub.
 
-## Simple UI for Some Functionality
+## Simple UI for Some Functionalities
 
 Below is a preview of the UI for managing bookings:
 
-<img src="docs/bookings.gif" alt="Bookings UI" width="1000" height="500">
-
-## Contributing
-
-Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) for more information.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
+<p align="center">
+<img src="docs/ui.gif" alt="UI Preview" width="700" height="500">
+</p>
 

@@ -169,19 +169,12 @@ Continuous Integration and Continuous Deployment (CI/CD) pipelines are configure
 <p align="center">
 <img src="docs/cicd.gif" alt="cicd Preview" width="700" height="500">
 </p>
+
 ### Docker Hub
 
 Docker Hub is used to store Docker images for the application. These images allow the application to be deployed on any cloud platform that supports Docker.
 
-- **Building the Docker image:**
-    ```bash
-    docker build -t your-dockerhub-username/booking-system:latest .
-    ```
 
-- **Pushing the Docker image to Docker Hub:**
-    ```bash
-    docker push your-dockerhub-username/booking-system:latest
-    ```
 
 ### Vercel
 

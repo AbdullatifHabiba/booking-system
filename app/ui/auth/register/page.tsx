@@ -1,6 +1,8 @@
 'use client';
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import 'react-toastify/dist/ReactToastify.css';
+import {  toast,ToastContainer } from 'react-toastify';
 
 export default function SignUp() {
   const router = useRouter();
@@ -20,24 +22,30 @@ export default function SignUp() {
         body: JSON.stringify({  email, password }),
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      // if (!response.ok) {
+      //   toast.error('Network response was not ok');
+      //   throw new Error('Network response was not ok');
+      // }
 
       const data = await response.json();
       if (response.status === 201) {
         console.log('Sign Up Successful:', data);
         // show success message
-         
+         toast.success('Sign Up Successful');
         // Redirect to the login page
+        setTimeout(() => {
          router.push('/ui/auth/login');
+        }
+        , 3000);
         
       } else {
         // Return error message
+        toast.error(data.message);
         console.log('Sign Up Failed:', data);
         return;
       }
     } catch (error) {
+      toast.error('Error during sign-up');
       console.error('Error during sign-up:', error);
       // Handle error (e.g., show error message to user)
     }
@@ -45,6 +53,7 @@ export default function SignUp() {
 
   return (
     <div>
+      <ToastContainer />
       <div className="min-h-screen flex items-center justify-center">
         <form className="bg-white p-6 rounded shadow-md w-80" onSubmit={handleSubmit}>
           <h2 className="text-2xl mb-4">Sign Up</h2>

@@ -1,9 +1,12 @@
-
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function SignIn() {
   const router = useRouter();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -20,24 +23,26 @@ export default function SignIn() {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      
 
       const data = await response.json();
       if (response.status === 200) {
-      console.log('Sign In Successful:', data);
-      // Store the response in sessionStorage
-      // show success message
-    router.push('/ui/slots');
-      }
-      else{
-        // retunr error message
-        console.log('Sign In Failed:', data);
-        return;
-       
-      }
+        console.log('Sign In Successful:', data);
+        // show success message and redirect to slots page
+        toast.success('Sign In Successful');
+        setTimeout(() => {
+          router.push('/ui/slots');
+        }
+        , 3000);
       
+
+      } else {
+        // return error message
+        console.log('Sign In Failed:', data);
+        toast.error(data.message);
+        return;
+      }
+
       // Store the response in sessionStorage
       sessionStorage.setItem('jwt', JSON.stringify(data.token));
       sessionStorage.setItem('email', JSON.stringify(email));
@@ -45,18 +50,22 @@ export default function SignIn() {
       // Handle successful sign-in (e.g., redirect, update UI)
     } catch (error) {
       console.error('Error during sign-in:', error);
-      // Handle error (e.g., show error message to user)
+      toast.error('An error occurred during sign-in. Please try again.');
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center">     
+
+
       <form className="bg-white p-6 rounded shadow-md w-80" onSubmit={handleSubmit}>
         <h2 className="text-2xl mb-4">Sign In</h2>
         <input type="email" name="email" placeholder="Email" className="w-full p-2 mb-4 border rounded" />
         <input type="password" name="password" placeholder="Password" className="w-full p-2 mb-4 border rounded" />
         <button type="submit" className="bg-blue-600 text-white w-full p-2 rounded">Sign In</button>
       </form>
+      <ToastContainer />
+
     </div>
   );
 }

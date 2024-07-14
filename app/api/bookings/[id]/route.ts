@@ -59,8 +59,8 @@ export async function GET(req: NextRequest, context: any) {
 export async function PUT(req: NextRequest, context: any) {
   const token = req.headers.get('Authorization')?.split(' ')[1];
 
-  const { slotId, zoomMeetingId, status } = await req.json();
-
+  const { slot, zoomMeetingId, status } = await req.json();
+console.log('slot:', slot, 'zoomMeetingId:', zoomMeetingId, 'status:', status);
   const user = authenticate(token);
   if (!user) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -73,7 +73,7 @@ export async function PUT(req: NextRequest, context: any) {
     const booking = await prisma.booking.update({
       where: { id: Number(id) },
       data: {
-        slot: { connect: { id: slotId } },
+        slot: { connect: { id:Number(slot)  } },
         zoomMeetingId: zoomMeetingId,
         status: status
       },

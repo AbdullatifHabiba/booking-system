@@ -27,7 +27,9 @@ COPY --from=build /app /app
 
 # Expose the port the app runs on
 EXPOSE 3000
+
+# Generate Prisma client
 RUN npx prisma generate --schema=./app/db/prisma/schema.local.prisma
 
 # Start the application
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start:migrate:prod"]
